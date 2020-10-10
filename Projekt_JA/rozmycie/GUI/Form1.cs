@@ -41,11 +41,9 @@ namespace GUI
             return copy;
 
         }
-        //rozbudowana wersja wzieta z neta równiez sie nie odpala
+        
         private void button2_Click(object sender, EventArgs e)
         {
-
-            MessageBox.Show("An Error occured", "Eror", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             string imageLocation = "";
             try
@@ -59,28 +57,16 @@ namespace GUI
                     image1.ImageLocation = imageLocation;
                 }
 
+                Form2 form2 = new Form2();
+                form2.Show();
+
+
             }
             catch(Exception)
             {
                 MessageBox.Show("An Error occured", "Eror", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        //wziete z neta nie działa, tzn nie odpala sie ten przycisk
-        private void button5_Click(object sender, EventArgs e)
-        {
-          opbl.Filter = "jpg|*.jpg";
-
-            DialogResult res = opbl.ShowDialog();
-            if (res == DialogResult.OK)
-            {
-                pbpic.Image = Image.FromFile(opbl.FileName);
-
-            }
-        }
-
-
-
-
 
         private Bitmap openimage()
         {
@@ -102,8 +88,8 @@ namespace GUI
             }
         }
 
-        
-
+        [DllImport("rozmycie.dll")]          
+        private static extern void rozmycie(IntPtr ptr, int length);
 
     }
 
