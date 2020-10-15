@@ -38,6 +38,8 @@
             this.pbpic = new System.Windows.Forms.PictureBox();
             this.button5 = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.image1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbpic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -55,7 +57,6 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "Przeglądaj...";
             this.button1.UseVisualStyleBackColor = false;
-            
             // 
             // label1
             // 
@@ -124,6 +125,27 @@
             this.pictureBox2.TabIndex = 7;
             this.pictureBox2.TabStop = false;
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(82, 308);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(149, 68);
+            this.button3.TabIndex = 8;
+            this.button3.Text = "button6";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.TextChanged += new System.EventHandler(this.button6_Click);
+            this.button3.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(655, 333);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(166, 63);
+            this.button4.TabIndex = 9;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -133,6 +155,8 @@
             this.BackgroundImage = global::GUI.Properties.Resources.s4_konkurs_fotograficzny_brodnica___moje_miasto_a_w_nim_1570637800_2459;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(942, 678);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.pbpic);
@@ -168,6 +192,8 @@
         private System.Windows.Forms.PictureBox pbpic;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
     }
 }
 

@@ -1,0 +1,3 @@
+﻿  rozmycie.cpp
+c:\users\natalia cheba\desktop\projekt_ja\rozmycie\rozmycie\rozmycie.cpp(73): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  rozmycie.vcxproj -> C:\Users\Natalia Cheba\Desktop\Projekt_JA\rozmycie\x64\Debug\rozmycie.dll

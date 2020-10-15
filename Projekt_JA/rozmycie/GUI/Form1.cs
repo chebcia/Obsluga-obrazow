@@ -54,12 +54,15 @@ namespace GUI
             }
         }
 
-        [DllImport("rozmycie.dll")]
-        private static extern void rozmycie(byte[] ptr, int height, int width, int threads = 4);
+        [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void rozmycie(byte[] ptr, int height, int width, int threads);
 
 
         [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void black_white(byte[] ptr, int len);
+
+        [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void edge(byte[] ptr, int height, int width, int threads);
 
         private void button5_Click(object sender, EventArgs e)
         {
@@ -72,6 +75,32 @@ namespace GUI
 
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
+        }
+       
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            var bmp = new Bitmap(img);
+            using (var bitmapReader = new BitmapPixelDataReader(bmp))
+            {
+                rozmycie(bitmapReader.data, bmp.Height, bmp.Width ,  4);
+
+            }
+            bmp.Save("out.jpg", ImageFormat.Jpeg);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var bmp = new Bitmap(img);
+            using (var bitmapReader = new BitmapPixelDataReader(bmp))
+            {
+                edge(bitmapReader.data, bmp.Height, bmp.Width, 4);
+
+            }
+            bmp.Save("out.jpg", ImageFormat.Jpeg);
+
+
+
         }
     }
 }

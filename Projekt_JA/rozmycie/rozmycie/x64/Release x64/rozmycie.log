@@ -1,0 +1,9 @@
+﻿  stdafx.cpp
+  dllmain.cpp
+  rozmycie.cpp
+c:\users\natalia cheba\desktop\projekt_ja\rozmycie\rozmycie\rozmycie.cpp(61): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+     Creating library C:\Users\Natalia Cheba\Desktop\Projekt_JA\rozmycie\x64\Release x64\rozmycie.lib and object C:\Users\Natalia Cheba\Desktop\Projekt_JA\rozmycie\x64\Release x64\rozmycie.exp
+  Generating code
+  All 3 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  rozmycie.vcxproj -> C:\Users\Natalia Cheba\Desktop\Projekt_JA\rozmycie\x64\Release x64\rozmycie.dll
