@@ -12,12 +12,14 @@ extern "C" {
 	DllExport void black_white(uint8_t*, int len);
 	DllExport void rozmycie(uint8_t* img, int height, int width, int threads);
 	DllExport void edge(uint8_t* img, int height, int width, int threads);
+	DllExport void sepia(uint8_t*, int len);
+	DllExport void negative(uint8_t*, int len);
 }
 
 void rozmycie(uint8_t* img, int height, int width, int threads)
 {
-	double sigma = 1;
-	int kernel_dim = 3;
+	double sigma = 10;
+	int kernel_dim = 11;
 	int n_of_channels = 4;
 	int kernel_size = kernel_dim * kernel_dim;
 	int half_kernel = (kernel_dim - 1) / 2;
@@ -77,6 +79,8 @@ void black_white(uint8_t* arrayTest, int len) {
 		arrayTest[i + 3] = alpha;
 		
 	}
+	
+
 }
 
 void edge(uint8_t* img, int height, int width, int threads)
@@ -129,3 +133,62 @@ void edge(uint8_t* img, int height, int width, int threads)
 	}
 }
 
+
+void sepia(uint8_t* arrayTest, int len) {
+	
+	int alpha = 255;
+	int red, green, blue;
+	for (int i = 0; i < len; i += 4)
+	{
+
+		red = (.393 * arrayTest[i]) + (.769 * arrayTest[i + 1]) + (.189 * arrayTest[i + 2]);  //red
+
+		green = (.349 * arrayTest[i]) + (.686 * arrayTest[i + 1]) + (.168 * arrayTest[i + 2]);//green
+
+		blue = (.272 * arrayTest[i]) + (.534 * arrayTest[i + 1]) + (.131 * arrayTest[i + 2]);//blue
+		arrayTest[i + 3] = alpha;
+		if (red > 255)
+		{
+			arrayTest[i + 2] = 255;
+		}
+		else {
+			arrayTest[i + 2] = (uint8_t)red;
+		}
+		if (green > 255)
+		{
+			arrayTest[i + 1] = 255;
+		}
+		else {
+			arrayTest[i + 1] = (uint8_t)green;
+
+
+		}
+		if (blue > 255)
+		{
+			arrayTest[i + 0] = 255;
+		}
+		else
+		{
+			arrayTest[i + 0] = (uint8_t)blue;
+
+		}
+	}
+
+
+}
+
+void negative(uint8_t* arrayTest, int len) {
+	
+	int alpha = 255;
+	for (int i = 0; i < len; i += 4) {
+
+		
+		arrayTest[i] = 255-arrayTest[i];
+		arrayTest[i + 1] = 255 - arrayTest[i+1];
+		arrayTest[i + 2] = 255 - arrayTest[i+2];
+		arrayTest[i + 3] = alpha;
+
+	}
+
+
+}

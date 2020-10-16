@@ -37,12 +37,11 @@ namespace GUI
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     imageLocation = dialog.FileName;
-                    image1.ImageLocation = imageLocation;
+                    //image1.ImageLocation = imageLocation;
                 }
-                image1.Show();
+                //image1.Show();
                 img = System.Drawing.Image.FromFile(dialog.FileName);
 
-                //MessageBox.Show("Width: " + img.Width + ", Height: " + img.Height);
 
                 //Form2 form2 = new Form2();
                 //form2.Show();
@@ -60,6 +59,12 @@ namespace GUI
 
         [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void black_white(byte[] ptr, int len);
+
+        [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void sepia(byte[] ptr, int len);
+
+        [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void negative(byte[] ptr, int len);
 
         [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void edge(byte[] ptr, int height, int width, int threads);
@@ -95,6 +100,36 @@ namespace GUI
             using (var bitmapReader = new BitmapPixelDataReader(bmp))
             {
                 edge(bitmapReader.data, bmp.Height, bmp.Width, 4);
+
+            }
+            bmp.Save("out.jpg", ImageFormat.Jpeg);
+
+
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var bmp = new Bitmap(img);
+            // using uzywamy do unmanaged resource po wyjsciu z using skasujemy zasób wywołanie dispose z automatu 
+
+            using (var bitmapReader = new BitmapPixelDataReader(bmp))
+            {
+                sepia(bitmapReader.data, bitmapReader.data.Length);
+
+            }
+            bmp.Save("out.jpg", ImageFormat.Jpeg);
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+
+            var bmp = new Bitmap(img);
+            // using uzywamy do unmanaged resource po wyjsciu z using skasujemy zasób wywołanie dispose z automatu 
+
+            using (var bitmapReader = new BitmapPixelDataReader(bmp))
+            {
+                negative(bitmapReader.data, bitmapReader.data.Length);
 
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
