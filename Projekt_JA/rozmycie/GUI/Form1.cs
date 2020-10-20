@@ -48,12 +48,7 @@ namespace GUI
                     imageLocation = dialog.FileName;
                     //image1.ImageLocation = imageLocation;
                 }
-                //image1.Show();
                 img = System.Drawing.Image.FromFile(dialog.FileName);
-
-
-                //Form2 form2 = new Form2();
-                //form2.Show();
 
             }
             catch (Exception)
@@ -75,8 +70,6 @@ namespace GUI
         [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void negative(byte[] ptr, int len, int thread);
 
-        [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void edge(byte[] ptr, int height, int width, int threads);
 
         private void button5_Click(object sender, EventArgs e)
         {
@@ -103,19 +96,6 @@ namespace GUI
             bmp.Save("out.jpg", ImageFormat.Jpeg);
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            var bmp = new Bitmap(img);
-            using (var bitmapReader = new BitmapPixelDataReader(bmp))
-            {
-                edge(bitmapReader.data, bmp.Height, bmp.Width, 4);
-
-            }
-            bmp.Save("out.jpg", ImageFormat.Jpeg);
-
-
-
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -143,11 +123,6 @@ namespace GUI
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
 
-
-
         }
-
-  
-     
     }
 }
