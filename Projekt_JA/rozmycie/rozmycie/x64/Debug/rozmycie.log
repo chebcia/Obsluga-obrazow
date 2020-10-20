@@ -1,7 +1,7 @@
 ﻿  rozmycie.cpp
-c:\users\natalia cheba\desktop\projekt_ja\rozmycie\rozmycie\rozmycie.cpp(75): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\natalia cheba\desktop\projekt_ja\rozmycie\rozmycie\rozmycie.cpp(144): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\natalia cheba\desktop\projekt_ja\rozmycie\rozmycie\rozmycie.cpp(146): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\natalia cheba\desktop\projekt_ja\rozmycie\rozmycie\rozmycie.cpp(148): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\natalia cheba\desktop\projekt_ja\rozmycie\rozmycie\rozmycie.cpp(132): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\natalia cheba\desktop\projekt_ja\rozmycie\rozmycie\rozmycie.cpp(204): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\natalia cheba\desktop\projekt_ja\rozmycie\rozmycie\rozmycie.cpp(206): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\natalia cheba\desktop\projekt_ja\rozmycie\rozmycie\rozmycie.cpp(208): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
      Creating library C:\Users\Natalia Cheba\Desktop\Projekt_JA\rozmycie\x64\Debug\rozmycie.lib and object C:\Users\Natalia Cheba\Desktop\Projekt_JA\rozmycie\x64\Debug\rozmycie.exp
   rozmycie.vcxproj -> C:\Users\Natalia Cheba\Desktop\Projekt_JA\rozmycie\x64\Debug\rozmycie.dll

@@ -36,6 +36,8 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // button2
@@ -105,6 +107,14 @@
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button8_Click);
             // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(434, 91);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 32);
+            this.numericUpDown1.TabIndex = 13;
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -114,6 +124,7 @@
             this.BackgroundImage = global::GUI.Properties.Resources.s4_konkurs_fotograficzny_brodnica___moje_miasto_a_w_nim_1570637800_2459;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(956, 521);
+            this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button4);
@@ -128,6 +139,7 @@
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = "Konwerter obrazu";
             this.TransparencyKey = System.Drawing.Color.Black;
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -140,6 +152,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }
 

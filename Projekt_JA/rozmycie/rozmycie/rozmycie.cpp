@@ -3,28 +3,32 @@
 #include "stdafx.h"
 #include <iostream>
 #include <string>
-
+#include <thread>
 #define DllExport   __declspec( dllexport )
 
 using namespace std;
 
 extern "C" {
-	DllExport void black_white(uint8_t*, int len);
+	DllExport void black_white(uint8_t*, int len, int threads);
 	DllExport void rozmycie(uint8_t* img, int height, int width, int threads);
 	DllExport void edge(uint8_t* img, int height, int width, int threads);
-	DllExport void sepia(uint8_t*, int len);
-	DllExport void negative(uint8_t*, int len);
+	DllExport void sepia(uint8_t*, int len, int thread);
+	DllExport void negative(uint8_t*, int len, int thread);
 }
-
-void rozmycie(uint8_t* img, int height, int width, int threads)
+void gauss(uint8_t * img, double * dest, int start, int stop, double* kernel, int n_of_channels, int half_kernel, int height, int width, int kernel_dim);
+void rozmycie(uint8_t* img, int height, int width, int th_n)
 {
+	//definicje 
 	double sigma = 10;
 	int kernel_dim = 11;
 	int n_of_channels = 4;
 	int kernel_size = kernel_dim * kernel_dim;
 	int half_kernel = (kernel_dim - 1) / 2;
-	// creating destination matrix
 	double* dest = new double[n_of_channels * width * height];
+	thread *th = new thread[th_n - 1]; // deklarowanie tablicy threadow
+	int start, stop;
+	int work_to_do =  (height-2*kernel_dim) / th_n;
+	// tworzenie obrazu / tablicy wyjsciowej / inicjalizacja 
 	for (int i = 0; i < n_of_channels * width * height; ++i) {
 		dest[i] = 0;
 	}
@@ -36,28 +40,35 @@ void rozmycie(uint8_t* img, int height, int width, int threads)
 		double horizontal_distance = abs(i % kernel_dim - half_kernel);
 		double vertical_distance = abs(floor(i / kernel_dim) - half_kernel);
 		double x = sqrt(horizontal_distance * horizontal_distance + vertical_distance * vertical_distance);
-		kernel[i] = pow(2.71, -x * x / (2 * sigma*sigma)) / (sqrt(2*3.14159) * sigma);
+		kernel[i] = pow(2.71, -x * x / (2 * sigma*sigma)) / (sqrt(2 * 3.14159) * sigma);
 		// blur
 		//kernel[i] = 1; // mean blur
 		sum += kernel[i];
 	}
 
+
 	// normalizacja
 	for (int i = 0; i < kernel_size; ++i) {
 		kernel[i] /= sum;
 	}
-	// applying filter
-	for (int c = 0; c < n_of_channels; ++c) {
-		for (int h = half_kernel; h < height - half_kernel; ++h) {
-			for (int w = half_kernel; w < width - half_kernel; ++w) {
-				for (int k_h = 0; k_h < kernel_dim; ++k_h) {
-					for (int k_w = 0; k_w < kernel_dim; ++k_w) {
-						dest[c + n_of_channels * (w + h * width)] += kernel[k_w + k_h * kernel_dim] * img[c + n_of_channels * ((w - half_kernel + k_w) + (h - half_kernel + k_h) * width)];
-					}
-				}
-			}
-		}
+
+	// odpalanie threadow
+	for (int i = 0; i < th_n - 1; ++i) { // 1 dla maina zostawimy
+		start = i* work_to_do + kernel_dim;
+		stop = (i+1) * work_to_do + kernel_dim;
+			th[i] = thread(gauss,img, dest, start, stop, kernel, n_of_channels, half_kernel, height, width, kernel_dim);
 	}
+	for (int i = th_n - 1; i < th_n; ++i) { // to co main robi
+		stop = height - kernel_dim;
+		start = i * work_to_do + kernel_dim;
+		gauss(img, dest, start, stop, kernel,  n_of_channels,  half_kernel,  height,  width, kernel_dim);
+
+	}
+
+	for (int i = 0; i < th_n - 1; ++i)
+		th[i].join();
+
+
 	for (int i = 0; i < n_of_channels * width * height; ++i) {
 		if (i % 4 == 3){
 			img[i] = 255;
@@ -67,21 +78,68 @@ void rozmycie(uint8_t* img, int height, int width, int threads)
 	}
 }
 
-void black_white(uint8_t* arrayTest, int len) {
+void gauss(uint8_t * img, double * dest, int start, int stop, double* kernel, int n_of_channels, int half_kernel, int height, int width, int kernel_dim)
+{
+
+	for (int c = 0; c < n_of_channels; ++c) {
+		for (int h = start; h < stop; ++h) {
+			for (int w = half_kernel; w < width - half_kernel; ++w) {
+				for (int k_h = 0; k_h < kernel_dim; ++k_h) {
+					for (int k_w = 0; k_w < kernel_dim; ++k_w) {
+						dest[c + n_of_channels * (w + h * width)] += kernel[k_w + k_h * kernel_dim] * img[c + n_of_channels * ((w - half_kernel + k_w) + (h - half_kernel + k_h) * width)];
+					}
+				}
+			}
+		}
+	}
+
+}
+
+void b_w(uint8_t* arrayTest, int start, int stop, int len);
+void black_white(uint8_t* arrayTest, int len, int threads) {
+
+	thread *thready = new thread[threads - 1];
+	int work_to_do = len / threads;
+	int start, stop;
+
+	
+	for (int i = 0; i < threads - 1; ++i) { // 1 dla maina zostawimy
+		start = i * work_to_do;
+		stop = (i + 1) * work_to_do;
+		thready[i] = thread(b_w, arrayTest, start, stop, len);
+	}
+	for (int i = threads - 1; i < threads; ++i) { // to co main robi
+		stop = len;
+		start = i * work_to_do;
+		b_w(arrayTest, start, stop, len);
+
+	}
+
+	for (int i = 0; i < threads - 1; ++i)
+		thready[i].join();
+
+
+}
+
+void b_w(uint8_t* arrayTest, int start, int stop, int len)
+
+{
+
 	int avg;
 	int alpha = 255;
-	for (int i = 0; i < len; i+= 4) {
+	for (int i = start; i < stop; i += 4) {
 
-		avg = 0.2989 *arrayTest[i+2] + 0.5870 *arrayTest[i+1] + 0.11*arrayTest[i];
+		avg = 0.2989 *arrayTest[i + 2] + 0.5870 *arrayTest[i + 1] + 0.11*arrayTest[i];
 		arrayTest[i] = avg;
 		arrayTest[i + 1] = avg;
 		arrayTest[i + 2] = avg;
 		arrayTest[i + 3] = alpha;
-		
+
 	}
-	
 
 }
+
+
 
 void edge(uint8_t* img, int height, int width, int threads)
 {
@@ -134,7 +192,7 @@ void edge(uint8_t* img, int height, int width, int threads)
 }
 
 
-void sepia(uint8_t* arrayTest, int len) {
+void sepia(uint8_t* arrayTest, int len, int thread) {
 	
 	int alpha = 255;
 	int red, green, blue;
@@ -177,7 +235,7 @@ void sepia(uint8_t* arrayTest, int len) {
 
 }
 
-void negative(uint8_t* arrayTest, int len) {
+void negative(uint8_t* arrayTest, int len, int thread) {
 	
 	int alpha = 255;
 	for (int i = 0; i < len; i += 4) {

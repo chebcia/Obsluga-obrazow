@@ -18,12 +18,21 @@ namespace GUI
     public partial class Form1 : Form
     {
         System.Drawing.Image img;
-
+        int thread;
         public Form1()
         {
             InitializeComponent();
         }
 
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+
+            numericUpDown1.Maximum = 64;
+            numericUpDown1.Minimum = 1;
+            thread = (int)numericUpDown1.Value;
+
+        }
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -54,17 +63,17 @@ namespace GUI
         }
 
         [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void rozmycie(byte[] ptr, int height, int width, int threads);
+        private static extern void rozmycie(byte[] ptr, int height, int width, int thread);
 
 
         [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
-        public extern static void black_white(byte[] ptr, int len);
+        public extern static void black_white(byte[] ptr, int len, int thread);
 
         [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
-        public extern static void sepia(byte[] ptr, int len);
+        public extern static void sepia(byte[] ptr, int len, int thread);
 
         [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
-        public extern static void negative(byte[] ptr, int len);
+        public extern static void negative(byte[] ptr, int len, int thread);
 
         [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void edge(byte[] ptr, int height, int width, int threads);
@@ -76,7 +85,7 @@ namespace GUI
 
             using (var bitmapReader = new BitmapPixelDataReader(bmp))
             {
-                black_white(bitmapReader.data, bitmapReader.data.Length);
+                black_white(bitmapReader.data, bitmapReader.data.Length, thread);
 
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
@@ -88,7 +97,7 @@ namespace GUI
             var bmp = new Bitmap(img);
             using (var bitmapReader = new BitmapPixelDataReader(bmp))
             {
-                rozmycie(bitmapReader.data, bmp.Height, bmp.Width ,  4);
+                rozmycie(bitmapReader.data, bmp.Height, bmp.Width ,  thread);
 
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
@@ -115,7 +124,7 @@ namespace GUI
 
             using (var bitmapReader = new BitmapPixelDataReader(bmp))
             {
-                sepia(bitmapReader.data, bitmapReader.data.Length);
+                sepia(bitmapReader.data, bitmapReader.data.Length, thread);
 
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
@@ -129,7 +138,7 @@ namespace GUI
 
             using (var bitmapReader = new BitmapPixelDataReader(bmp))
             {
-                negative(bitmapReader.data, bitmapReader.data.Length);
+                negative(bitmapReader.data, bitmapReader.data.Length, thread);
 
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
@@ -137,5 +146,8 @@ namespace GUI
 
 
         }
+
+  
+     
     }
 }
