@@ -1,0 +1,5 @@
+LIBRARY JAAsm
+EXPORTS 
+	MyProc2
+	MyProc1 
+	checkMMXCapability

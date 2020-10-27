@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,6 +22,7 @@ namespace GUI
         int thread;
         public Form1()
         {
+
             InitializeComponent();
         }
 
@@ -62,23 +64,45 @@ namespace GUI
 
 
         [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
-        public extern static void black_white(byte[] ptr, int len, int thread);
+        public extern static void b_w(byte[] ptr, int start, int stop);
+       
+        [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void sep(byte[] ptr, int start, int stop);
 
         [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
-        public extern static void sepia(byte[] ptr, int len, int thread);
+        public extern static void neg(byte[] ptr, int start, int stop);
 
-        [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
-        public extern static void negative(byte[] ptr, int len, int thread);
+        
+
+        
+
+
+
+
 
 
         private void button5_Click(object sender, EventArgs e)
-        {
+        {    
             var bmp = new Bitmap(img);
             // using uzywamy do unmanaged resource po wyjsciu z using skasujemy zasób wywołanie dispose z automatu 
 
             using (var bitmapReader = new BitmapPixelDataReader(bmp))
             {
-                black_white(bitmapReader.data, bitmapReader.data.Length, thread);
+                int work_to_do = bitmapReader.data.Length / thread;
+                Thread[] threads = new Thread[thread];
+
+                for (int i = 0; i < thread; i++)
+                {  
+                    var start = i * work_to_do;
+                    var stop = (i + 1) * work_to_do;
+                    threads[i] = new Thread(() => b_w(bitmapReader.data, start, stop));
+                    threads[i].Start();
+                }
+                
+                for (int i = 0; i < thread;  i++)
+                {
+                    threads[i].Join();
+                }
 
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
@@ -104,7 +128,21 @@ namespace GUI
 
             using (var bitmapReader = new BitmapPixelDataReader(bmp))
             {
-                sepia(bitmapReader.data, bitmapReader.data.Length, thread);
+                int work_to_do = bitmapReader.data.Length / thread;
+                Thread[] threads = new Thread[thread];
+
+                for (int i = 0; i < thread; i++)
+                {
+                    var start = i * work_to_do;
+                    var stop = (i + 1) * work_to_do;
+                    threads[i] = new Thread(() => sep(bitmapReader.data, start, stop));
+                    threads[i].Start();
+                }
+
+                for (int i = 0; i < thread; i++)
+                {
+                    threads[i].Join();
+                }
 
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
@@ -112,17 +150,78 @@ namespace GUI
 
         private void button8_Click(object sender, EventArgs e)
         {
-
             var bmp = new Bitmap(img);
             // using uzywamy do unmanaged resource po wyjsciu z using skasujemy zasób wywołanie dispose z automatu 
 
             using (var bitmapReader = new BitmapPixelDataReader(bmp))
             {
-                negative(bitmapReader.data, bitmapReader.data.Length, thread);
+                int work_to_do = bitmapReader.data.Length / thread;
+                Thread[] threads = new Thread[thread];
+
+                for (int i = 0; i < thread; i++)
+                {
+                    var start = i * work_to_do;
+                    var stop = (i + 1) * work_to_do;
+                    threads[i] = new Thread(() => neg(bitmapReader.data, start, stop));
+                    threads[i].Start();
+                }
+
+                for (int i = 0; i < thread; i++)
+                {
+                    threads[i].Join();
+                }
 
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
 
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var bmp = new Bitmap(img);
+            using (var bitmapReader = new BitmapPixelDataReader(bmp))
+            {
+               // unsafe
+               // {
+                    ASM.MyProc1(bitmapReader.data, bitmapReader.data.Length);
+               // }
+
+            }
+            bmp.Save("out.jpg", ImageFormat.Jpeg);
+
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            var bmp = new Bitmap(img);
+            using (var bitmapReader = new BitmapPixelDataReader(bmp))
+            {
+                // unsafe
+                // {
+                ASM.MyProc2(bitmapReader.data, bitmapReader.data.Length);
+                // }
+
+            }
+            bmp.Save("out.jpg", ImageFormat.Jpeg);
+
+
+
         }
     }
+
+    class ASM
+    {
+
+
+        [DllImport("JAAsm.dll")]
+        public extern static void MyProc1(byte[] data, int length);
+        [DllImport("JAAsm.dll")]
+        public extern static void MyProc2(byte[] data, int length);
+        [DllImport("JAAsm.dll")]
+        public static extern bool checkMMXCapability();
+
+    }
 }
+
