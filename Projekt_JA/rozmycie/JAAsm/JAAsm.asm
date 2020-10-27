@@ -22,7 +22,7 @@ MyProc1 PROC
     jmp b_w_end_loop
 
 b_w_loop:
-    push r10
+		push r10
         movzx eax, byte ptr[r8 + r10] ; nie ma interpetowac tego co jest w srodku i ma je zastapic 0 
         cvtsi2sd xmm0, eax ; zerowy rejestr od tego ful
         mulsd xmm0, qword ptr red_mult  ; wysze bity 64 qword, mulsd - rozszerzenie na obliczeniach na zmiennoprzecinkowych
@@ -40,7 +40,7 @@ b_w_loop:
         addsd xmm0, xmm1
 
         cvttsd2si r12, xmm0 ; double na integery i przypisanie do r12
-    pop r10
+		pop r10
 
     mov byte ptr[r8 + r10], r12b ; najnisze 8 bitow
     inc r10  
