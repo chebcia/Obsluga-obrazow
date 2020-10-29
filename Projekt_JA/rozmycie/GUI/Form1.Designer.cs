@@ -38,6 +38,7 @@
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.button4 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -126,6 +127,16 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(658, 421);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(246, 68);
+            this.button8.TabIndex = 16;
+            this.button8.Text = "button8";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click_1);
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -135,6 +146,7 @@
             this.BackgroundImage = global::GUI.Properties.Resources.s4_konkurs_fotograficzny_brodnica___moje_miasto_a_w_nim_1570637800_2459;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(956, 521);
+            this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.numericUpDown1);
@@ -166,6 +178,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
     }
 }
 

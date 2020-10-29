@@ -16,7 +16,7 @@ MyProc1 PROC
     mov r10, 0 ; licznik 
     mov r11, rbx ;  zapis 
     mov r9, rdx ; d³ugoœæ
-    mov r8, rcx ;  array
+    add r8, rcx ;  array
     mov rbx, 4  ; ilosc channeli
     mov r12, 0 ; avg
     jmp b_w_end_loop

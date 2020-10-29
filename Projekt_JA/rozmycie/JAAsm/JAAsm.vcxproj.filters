@@ -3,7 +3,7 @@
   <ItemGroup>
     <MASM Include="JAAsm.asm" />
     <MASM Include="JAAsm2.asm" />
-    <MASM Include="JAAsm3.asm" />
+    <MASM Include="JAAsm5.asm" />
   </ItemGroup>
   <ItemGroup>
     <None Include="JAAsm.def" />

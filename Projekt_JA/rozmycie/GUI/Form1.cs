@@ -182,10 +182,23 @@ namespace GUI
             var bmp = new Bitmap(img);
             using (var bitmapReader = new BitmapPixelDataReader(bmp))
             {
-               // unsafe
-               // {
-                    ASM.MyProc1(bitmapReader.data, bitmapReader.data.Length);
-               // }
+                int work_to_do = bitmapReader.data.Length / thread;
+                Thread[] threads = new Thread[thread];
+
+                for (int i = 0; i < thread; i++)
+                {
+                    var start = i * work_to_do;
+                    var stop = (i + 1) * work_to_do;
+                    threads[i] = new Thread(() => ASM.MyProc1(bitmapReader.data, work_to_do, start));
+                    threads[i].Start();
+                }
+
+                for (int i = 0; i < thread; i++)
+                {
+                    threads[i].Join();
+                }
+               // ASM.MyProc1(bitmapReader.data, bitmapReader.data.Length);
+              
 
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
@@ -198,14 +211,62 @@ namespace GUI
             var bmp = new Bitmap(img);
             using (var bitmapReader = new BitmapPixelDataReader(bmp))
             {
-                // unsafe
-                // {
-                ASM.MyProc2(bitmapReader.data, bitmapReader.data.Length);
-                // }
+
+                int work_to_do = bitmapReader.data.Length / thread;
+                Thread[] threads = new Thread[thread];
+
+                for (int i = 0; i < thread; i++)
+                {
+                    var start = i * work_to_do;
+                    var stop = (i + 1) * work_to_do;
+                    threads[i] = new Thread(() => ASM.MyProc2(bitmapReader.data, work_to_do, start));
+                    threads[i].Start();
+                }
+
+                for (int i = 0; i < thread; i++)
+                {
+                    threads[i].Join();
+                }
+
+
+       
+               // ASM.MyProc2(bitmapReader.data, bitmapReader.data.Length);
+                
 
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
 
+
+
+        }
+
+        private void button8_Click_1(object sender, EventArgs e)
+        {
+            var bmp = new Bitmap(img);
+            using (var bitmapReader = new BitmapPixelDataReader(bmp))
+            {
+                int work_to_do = bitmapReader.data.Length / thread;
+                Thread[] threads = new Thread[thread];
+
+                for (int i = 0; i < thread; i++)
+                {
+                    var start = i * work_to_do;
+                    var stop = (i + 1) * work_to_do;
+                    threads[i] = new Thread(() => ASM.MyProc3(bitmapReader.data, work_to_do, start));
+                    threads[i].Start();
+                }
+
+                for (int i = 0; i < thread; i++)
+                {
+                    threads[i].Join();
+                }
+
+
+              //  ASM.MyProc3(bitmapReader.data, bitmapReader.data.Length, 0);
+               
+
+            }
+            bmp.Save("out.jpg", ImageFormat.Jpeg);
 
 
         }
@@ -216,11 +277,13 @@ namespace GUI
 
 
         [DllImport("JAAsm.dll")]
-        public extern static void MyProc1(byte[] data, int length);
+        public extern static void MyProc1(byte[] data, int length, int start);
         [DllImport("JAAsm.dll")]
-        public extern static void MyProc2(byte[] data, int length);
+        public extern static void MyProc2(byte[] data, int length, int start);
         [DllImport("JAAsm.dll")]
         public static extern bool checkMMXCapability();
+        [DllImport("JAAsm.dll")]
+        public extern static void MyProc3(byte[] data, int length, int start);
 
     }
 }
