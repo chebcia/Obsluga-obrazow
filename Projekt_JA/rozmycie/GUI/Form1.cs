@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -72,14 +73,6 @@ namespace GUI
         [DllImport("rozmycie.dll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void neg(byte[] ptr, int start, int stop);
 
-        
-
-        
-
-
-
-
-
 
         private void button5_Click(object sender, EventArgs e)
         {    
@@ -90,7 +83,8 @@ namespace GUI
             {
                 int work_to_do = bitmapReader.data.Length / thread;
                 Thread[] threads = new Thread[thread];
-
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
                 for (int i = 0; i < thread; i++)
                 {  
                     var start = i * work_to_do;
@@ -103,7 +97,8 @@ namespace GUI
                 {
                     threads[i].Join();
                 }
-
+                watch.Stop();
+                textBox1.Text = watch.Elapsed.TotalMilliseconds.ToString();
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
         }
@@ -130,7 +125,8 @@ namespace GUI
             {
                 int work_to_do = bitmapReader.data.Length / thread;
                 Thread[] threads = new Thread[thread];
-
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
                 for (int i = 0; i < thread; i++)
                 {
                     var start = i * work_to_do;
@@ -143,7 +139,8 @@ namespace GUI
                 {
                     threads[i].Join();
                 }
-
+                watch.Stop();
+                textBox1.Text = watch.Elapsed.TotalMilliseconds.ToString();
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
         }
@@ -157,7 +154,8 @@ namespace GUI
             {
                 int work_to_do = bitmapReader.data.Length / thread;
                 Thread[] threads = new Thread[thread];
-
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
                 for (int i = 0; i < thread; i++)
                 {
                     var start = i * work_to_do;
@@ -170,7 +168,8 @@ namespace GUI
                 {
                     threads[i].Join();
                 }
-
+                watch.Stop();
+                textBox1.Text = watch.Elapsed.TotalMilliseconds.ToString();
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
 
@@ -184,7 +183,8 @@ namespace GUI
             {
                 int work_to_do = bitmapReader.data.Length / thread;
                 Thread[] threads = new Thread[thread];
-
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
                 for (int i = 0; i < thread; i++)
                 {
                     var start = i * work_to_do;
@@ -197,8 +197,10 @@ namespace GUI
                 {
                     threads[i].Join();
                 }
-               // ASM.MyProc1(bitmapReader.data, bitmapReader.data.Length);
-              
+                watch.Stop();
+                textBox1.Text = watch.Elapsed.TotalMilliseconds.ToString();
+                // ASM.MyProc1(bitmapReader.data, bitmapReader.data.Length);
+
 
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
@@ -214,6 +216,8 @@ namespace GUI
 
                 int work_to_do = bitmapReader.data.Length / thread;
                 Thread[] threads = new Thread[thread];
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
 
                 for (int i = 0; i < thread; i++)
                 {
@@ -227,11 +231,12 @@ namespace GUI
                 {
                     threads[i].Join();
                 }
+                watch.Stop();
+                textBox1.Text = watch.Elapsed.TotalMilliseconds.ToString();
 
 
-       
-               // ASM.MyProc2(bitmapReader.data, bitmapReader.data.Length);
-                
+                // ASM.MyProc2(bitmapReader.data, bitmapReader.data.Length);
+
 
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
@@ -247,7 +252,8 @@ namespace GUI
             {
                 int work_to_do = bitmapReader.data.Length / thread;
                 Thread[] threads = new Thread[thread];
-
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
                 for (int i = 0; i < thread; i++)
                 {
                     var start = i * work_to_do;
@@ -260,16 +266,17 @@ namespace GUI
                 {
                     threads[i].Join();
                 }
+                watch.Stop();
+                textBox1.Text = watch.Elapsed.TotalMilliseconds.ToString();
 
-
-              //  ASM.MyProc3(bitmapReader.data, bitmapReader.data.Length, 0);
-               
-
+                //  ASM.MyProc3(bitmapReader.data, bitmapReader.data.Length, 0);
             }
             bmp.Save("out.jpg", ImageFormat.Jpeg);
 
 
         }
+
+      
     }
 
     class ASM

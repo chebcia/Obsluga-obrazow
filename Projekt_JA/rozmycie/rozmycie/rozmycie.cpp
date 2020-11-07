@@ -15,6 +15,7 @@ extern "C" {
 	DllExport void b_w(uint8_t *arrayTest, int start, int stop);
 	DllExport void sep(uint8_t *arrayTest, int start, int stop);
 	DllExport void neg(uint8_t *arrayTest, int start, int stop);
+	
 }
 void gauss(uint8_t * img, double * dest, int start, int stop, double* kernel, int n_of_channels, int half_kernel, int height, int width, int kernel_dim);
 void rozmycie(uint8_t* img, int height, int width, int th_n)
@@ -42,8 +43,6 @@ void rozmycie(uint8_t* img, int height, int width, int th_n)
 		double vertical_distance = abs(floor(i / kernel_dim) - half_kernel);
 		double x = sqrt(horizontal_distance * horizontal_distance + vertical_distance * vertical_distance);
 		kernel[i] = pow(2.71, -x * x / (2 * sigma*sigma)) / (sqrt(2 * 3.14159) * sigma);
-		// blur
-		//kernel[i] = 1; // mean blur
 		sum += kernel[i];
 	}
 
@@ -122,9 +121,9 @@ void sep(uint8_t* arrayTest, int start, int stop)
 	int red, green, blue;
 	for (int i = start; i < stop; i += 4)
 	{
-		red = (.393 * arrayTest[i]) + (.769 * arrayTest[i + 1]) + (.189 * arrayTest[i + 2]);  //red
-		green = (.349 * arrayTest[i]) + (.686 * arrayTest[i + 1]) + (.168 * arrayTest[i + 2]);//green
-		blue = (.272 * arrayTest[i]) + (.534 * arrayTest[i + 1]) + (.131 * arrayTest[i + 2]);//blue
+		red = (.393 * arrayTest[i]) + (.769 * arrayTest[i + 1]) + (.189 * arrayTest[i + 2]); 
+		green = (.349 * arrayTest[i]) + (.686 * arrayTest[i + 1]) + (.168 * arrayTest[i + 2]);
+		blue = (.272 * arrayTest[i]) + (.534 * arrayTest[i + 1]) + (.131 * arrayTest[i + 2]);
 		arrayTest[i + 3] = alpha;
 		arrayTest[i+2] = red + (red > 255) * (255-red);
 		arrayTest[i + 1] = green + (green> 255) * (255-green);

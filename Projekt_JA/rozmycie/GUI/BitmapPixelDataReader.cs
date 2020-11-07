@@ -15,19 +15,16 @@ namespace GUI
         public BitmapPixelDataReader(Bitmap image)
         {
             // Create a new bitmap.
-            //bmp = new Bitmap(image);
-            bmp = image;
+            bmp = image; 
             // Lock the bitmap's bits.
             var rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
             bitmapData =
                 bmp.LockBits(rect, ImageLockMode.ReadWrite,
                 bmp.PixelFormat);
 
-            // Get the address of the first line.
-            IntPtr ptr = bitmapData.Scan0;
+            IntPtr ptr = bitmapData.Scan0; // Get the address of the first line.
 
-            // Declare an array to hold the bytes of the bitmap.
-            int bytes = Math.Abs(bitmapData.Stride) * bmp.Height;
+            int bytes = Math.Abs(bitmapData.Stride) * bmp.Height; // // Declare an array to hold the bytes of the bitmap.
             data = new byte[bytes];
 
             // Copy the RGB values into the array.
